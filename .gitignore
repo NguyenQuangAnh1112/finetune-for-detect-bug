@@ -5,10 +5,36 @@ build/
 dist/
 wheels/
 *.egg-info
+.installed.cfg
+*.egg
 
 # Virtual environments
-.venv
+.venv/
+env/
+venv/
+ENV/
 
+# Data and Artifacts
 data/
+artifacts/
 
+# Logs
 logs/
+*.log
+
+# MLflow
+mlruns/
+mlflow/
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store
+
+# Environment variables
+.env
+.flaskenv
+
+# DVC (excluding config if needed, but usually data is dvc-ignored)
+/data/
+/artifacts/
