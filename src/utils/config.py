@@ -1,9 +1,17 @@
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from src.constants import CONFIG_FILE_PATH
-from src.entity.config_entity import AppConfig, DataIngestionConfig, DataValidationConfig
+from src.entity.config_entity import (
+    AppConfig,
+    DataIngestionConfig,
+    DataTransformationConfig,
+    DataValidationConfig,
+)
 
 
 class ConfigurationManager:
@@ -27,4 +35,15 @@ class ConfigurationManager:
             root_dir=Path(config.get("root_dir")),
             status_file=Path(config.get("status_file")),
             all_required_files=config.get("all_required_files", []),
+        )
+
+    def get_data_transformation_config(self) -> DataTransformationConfig:
+        config = self.config.get("data_transformation", {})
+
+        return DataTransformationConfig(
+            root_dir=Path(config.get("root_dir")),
+            source_data_file=Path(config.get("source_data_file")),
+            tokenizer_name=config.get("tokenizer_name"),
+            max_length=config.get("max_length"),
+            test_size=config.get("test_size"),
         )
