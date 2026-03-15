@@ -3,7 +3,7 @@ from pathlib import Path
 import yaml
 
 from src.constants import CONFIG_FILE_PATH
-from src.entity.config_entity import AppConfig, DataIngestionConfig
+from src.entity.config_entity import AppConfig, DataIngestionConfig, DataValidationConfig
 
 
 class ConfigurationManager:
@@ -18,4 +18,13 @@ class ConfigurationManager:
             root_dir=Path(config.get("root_dir")),
             huggingface_source_url=config.get("huggingface_source_url"),
             local_data_file=Path(config.get("local_data_file")),
+        )
+
+    def get_data_validation_config(self) -> DataValidationConfig:
+        config = self.config.get("data_validation", {})
+
+        return DataValidationConfig(
+            root_dir=Path(config.get("root_dir")),
+            status_file=Path(config.get("status_file")),
+            all_required_files=config.get("all_required_files", []),
         )
