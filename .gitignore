@@ -38,3 +38,11 @@ mlflow/
 # DVC (excluding config if needed, but usually data is dvc-ignored)
 /data/
 /artifacts/
+
+# Model Caches
+.cache/
+models/
+huggingface/
+
+# Internal Agents
+.agent/

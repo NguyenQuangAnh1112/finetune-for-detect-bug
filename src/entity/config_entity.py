@@ -26,7 +26,16 @@ class DataTransformationConfig:
 
 
 @dataclass(frozen=True)
+class ModelConfig:
+    root_dir: Path
+    model_name: str
+    cache_dir: Path
+    use_4bit: bool
+
+
+@dataclass(frozen=True)
 class AppConfig:
     data_ingestion: DataIngestionConfig
     data_validation: DataValidationConfig
     data_transformation: DataTransformationConfig
+    model: ModelConfig

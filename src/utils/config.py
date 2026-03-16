@@ -3,15 +3,16 @@ from pathlib import Path
 import yaml
 from dotenv import load_dotenv
 
-load_dotenv()
-
 from src.constants import CONFIG_FILE_PATH
 from src.entity.config_entity import (
     AppConfig,
     DataIngestionConfig,
     DataTransformationConfig,
     DataValidationConfig,
+    ModelConfig,
 )
+
+load_dotenv()
 
 
 class ConfigurationManager:
@@ -46,4 +47,14 @@ class ConfigurationManager:
             tokenizer_name=config.get("tokenizer_name"),
             max_length=config.get("max_length"),
             test_size=config.get("test_size"),
+        )
+
+    def get_model_config(self) -> ModelConfig:
+        config = self.config.get("model", {})
+
+        return ModelConfig(
+            root_dir=Path(config.get("root_dir")),
+            model_name=config.get("model_name"),
+            cache_dir=Path(config.get("cache_dir")),
+            use_4bit=config.get("use_4bit", True),
         )

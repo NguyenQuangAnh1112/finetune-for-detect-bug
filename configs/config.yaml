@@ -14,3 +14,9 @@ data_transformation:
   tokenizer_name: meta-llama/Llama-3.1-8B-Instruct
   max_length: 2048
   test_size: 0.1
+
+model:
+  root_dir: artifacts/model
+  model_name: meta-llama/Meta-Llama-3.1-8B-Instruct
+  cache_dir: /home/muggle/.gemini/antigravity/brain/3dbc2d2f-520a-4fd9-b994-c82cc5b5c605/models
+  use_4bit: true
