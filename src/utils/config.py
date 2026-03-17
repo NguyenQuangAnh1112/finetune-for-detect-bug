@@ -10,6 +10,7 @@ from src.entity.config_entity import (
     DataTransformationConfig,
     DataValidationConfig,
     ModelConfig,
+    TrainingConfig,
 )
 
 load_dotenv()
@@ -57,4 +58,25 @@ class ConfigurationManager:
             model_name=config.get("model_name"),
             cache_dir=Path(config.get("cache_dir")),
             use_4bit=config.get("use_4bit", True),
+        )
+
+    def get_training_config(self) -> TrainingConfig:
+        config = self.config.get("training", {})
+
+        return TrainingConfig(
+            root_dir=Path(config.get("root_dir")),
+            dataset_path=Path(config.get("dataset_path")),
+            num_train_epochs=config.get("num_train_epochs", 3),
+            per_device_train_batch_size=config.get("per_device_train_batch_size", 2),
+            per_device_eval_batch_size=config.get("per_device_eval_batch_size", 2),
+            gradient_accumulation_steps=config.get("gradient_accumulation_steps", 4),
+            learning_rate=config.get("learning_rate", 2e-4),
+            logging_steps=config.get("logging_steps", 25),
+            save_steps=config.get("save_steps", 100),
+            eval_steps=config.get("eval_steps", 100),
+            warmup_ratio=config.get("warmup_ratio", 0.05),
+            lora_r=config.get("lora_r", 16),
+            lora_alpha=config.get("lora_alpha", 32),
+            lora_dropout=config.get("lora_dropout", 0.05),
+            target_modules=config.get("target_modules", ["q_proj", "v_proj"]),
         )

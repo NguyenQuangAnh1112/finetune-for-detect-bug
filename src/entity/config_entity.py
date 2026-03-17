@@ -34,8 +34,28 @@ class ModelConfig:
 
 
 @dataclass(frozen=True)
+class TrainingConfig:
+    root_dir: Path
+    dataset_path: Path
+    num_train_epochs: int
+    per_device_train_batch_size: int
+    per_device_eval_batch_size: int
+    gradient_accumulation_steps: int
+    learning_rate: float
+    logging_steps: int
+    save_steps: int
+    eval_steps: int
+    warmup_ratio: float
+    lora_r: int
+    lora_alpha: int
+    lora_dropout: float
+    target_modules: list
+
+
+@dataclass(frozen=True)
 class AppConfig:
     data_ingestion: DataIngestionConfig
     data_validation: DataValidationConfig
     data_transformation: DataTransformationConfig
     model: ModelConfig
+    training: TrainingConfig

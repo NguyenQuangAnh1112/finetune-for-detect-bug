@@ -46,3 +46,6 @@ huggingface/
 
 # Internal Agents
 .agent/
+
+# Project Guide (Local only)
+ARCHITECTURE_GUIDE.md

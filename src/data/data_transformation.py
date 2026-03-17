@@ -21,8 +21,11 @@ SYSTEM_PROMPT = (
 
 class DataTransformation:
     """
-    Handles data transformation for fine-tuning Llama 3.1 8B.
+    Handles data transformation for fine-tuning causal LLMs.
     Includes: prompt formatting, tokenization, and train/validation split.
+
+    Uses `tokenizer.apply_chat_template` — compatible with any model
+    (Qwen2.5, Llama 3, Phi-3, etc.) without hardcoded special tokens.
     """
 
     def __init__(self, config: DataTransformationConfig):
@@ -35,35 +38,40 @@ class DataTransformation:
 
         logger.info(f"Tokenizer loaded: {config.tokenizer_name}")
 
-    @staticmethod
-    def format_prompt(row: dict) -> str:
+    def format_prompt(self, row: dict) -> str:
         """
-        Format a single data row into Llama 3.1 chat prompt.
+        Formats a single data row into the model's native chat template.
+
+        Uses `tokenizer.apply_chat_template` so the output is correct
+        for any model (Qwen2.5, Llama 3, etc.) without hardcoded tokens.
 
         Args:
             row: Dictionary with keys 'Faulty Code', 'Bug_Type',
                  'High-Level Description', 'Fault Free Code'.
         Returns:
-            Formatted prompt string.
+            Formatted prompt string ready for tokenization.
         """
         user_message = (
             "Analyze the following Python code and identify the bug.\n\n"
             f"```python\n{row['Faulty Code']}\n```"
         )
-
         assistant_message = (
             f"**Bug Type**: {row['Bug_Type']}\n\n"
             f"**Description**: {row['High-Level Description']}\n\n"
             f"**Fixed Code**:\n```python\n{row['Fault Free Code']}\n```"
         )
 
-        prompt = (
-            f"<|begin_of_text|>"
-            f"<|start_header_id|>system<|end_header_id|>\n\n{SYSTEM_PROMPT}<|eot_id|>"
-            f"<|start_header_id|>user<|end_header_id|>\n\n{user_message}<|eot_id|>"
-            f"<|start_header_id|>assistant<|end_header_id|>\n\n{assistant_message}<|eot_id|>"
+        messages = [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_message},
+            {"role": "assistant", "content": assistant_message},
+        ]
+
+        return self.tokenizer.apply_chat_template(
+            messages,
+            tokenize=False,
+            add_generation_prompt=False,
         )
-        return prompt
 
     @he_raise
     def load_data(self, validation_config: DataValidationConfig) -> pd.DataFrame:
