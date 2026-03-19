@@ -5,6 +5,7 @@ import mlflow
 import torch
 from datasets import load_from_disk
 from transformers import TrainingArguments
+from transformers.utils import is_torch_bf16_gpu_available
 from trl import SFTTrainer
 
 from src.entity.config_entity import ModelConfig, TrainingConfig
@@ -28,6 +29,9 @@ def _build_training_args(config: TrainingConfig) -> TrainingArguments:
         f"batch={config.per_device_train_batch_size}, lr={config.learning_rate}, "
         f"grad_accum={config.gradient_accumulation_steps}"
     )
+    # Only enable bf16 when the current environment supports it.
+    use_bf16 = torch.cuda.is_available() and is_torch_bf16_gpu_available()
+
     return TrainingArguments(
         output_dir=str(config.root_dir),
         num_train_epochs=config.num_train_epochs,
@@ -42,7 +46,7 @@ def _build_training_args(config: TrainingConfig) -> TrainingArguments:
         eval_strategy="steps",
         save_strategy="steps",
         load_best_model_at_end=True,
-        bf16=True,
+        bf16=use_bf16,
         gradient_checkpointing=True,
         remove_unused_columns=False,
         report_to="none",
