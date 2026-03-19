@@ -39,6 +39,20 @@ uv run python train.py --config configs/config.yaml
 - Các chỉ số và tham số sẽ được log vào MLflow mặc định (local tracking).
 - Xem log trong thư mục `mlruns/`.
 
+**DVC (quản lý pipeline và data)**
+- Chạy toàn bộ pipeline theo `dvc.yaml`:
+```bash
+dvc repro
+```
+- Đồng bộ dữ liệu lên remote (nếu đã cấu hình):
+```bash
+dvc push
+```
+- Kéo dữ liệu từ remote:
+```bash
+dvc pull
+```
+
 **Troubleshooting**
 - OOM GPU: giảm `per_device_train_batch_size`, tăng `gradient_accumulation_steps`, bật `use_4bit: true`.
 - Lỗi dataset không tìm thấy: chạy data transformation trước, đảm bảo `dataset_path` đúng.
@@ -52,3 +66,15 @@ uv run python train.py --config configs/config.yaml
 **Tài liệu thêm**
 - `docs/code_reading_guide.md`
 - `docs/training_bug_fixes.md`
+- `docs/dataset_card.md`
+- `docs/model_card.md`
+
+**DVC (tùy chọn)**
+- Khởi tạo DVC (nếu chưa): `dvc init`
+- Chạy pipeline dữ liệu theo `dvc.yaml`: `dvc repro`
+- Track dữ liệu/artefact bằng DVC:
+  - `git add dvc.yaml dvc.lock`
+  - `git add artifacts/data_ingestion/PyresBugs.tsv.dvc` (nếu bạn dùng `dvc add` thủ công)
+- Nếu có remote storage:
+  - `dvc remote add -d storage <remote-url>`
+  - `dvc push`

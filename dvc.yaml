@@ -1,0 +1,36 @@
+stages:
+  data_ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+      - configs/config.yaml
+      - src/constants/__init__.py
+      - src/entity/config_entity.py
+      - src/utils/config.py
+      - src/data/data_ingestion.py
+    outs:
+      - artifacts/data_ingestion/PyresBugs.tsv
+
+  data_validation:
+    cmd: python src/data/data_validation.py
+    deps:
+      - configs/config.yaml
+      - src/constants/__init__.py
+      - src/entity/config_entity.py
+      - src/utils/config.py
+      - src/data/data_validation.py
+      - artifacts/data_ingestion/PyresBugs.tsv
+    outs:
+      - artifacts/data_validation/status.txt
+
+  data_transformation:
+    cmd: python src/data/data_transformation.py
+    deps:
+      - configs/config.yaml
+      - src/constants/__init__.py
+      - src/entity/config_entity.py
+      - src/utils/config.py
+      - src/data/data_validation.py
+      - src/data/data_transformation.py
+      - artifacts/data_ingestion/PyresBugs.tsv
+    outs:
+      - artifacts/data_transformation
