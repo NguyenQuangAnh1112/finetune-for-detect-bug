@@ -87,7 +87,7 @@ docker run --gpus all --rm -it \
 **DVC (tùy chọn)**
 - Khởi tạo DVC (nếu chưa): `dvc init`
 - Chạy pipeline dữ liệu theo `dvc.yaml`: `dvc repro`
-- Track dữ liệu/artefact bằng DVC:
+- Track dữ liệu/artifact bằng DVC:
   - `git add dvc.yaml dvc.lock`
   - `git add artifacts/data_ingestion/PyresBugs.tsv.dvc` (nếu bạn dùng `dvc add` thủ công)
 - Nếu có remote storage:
