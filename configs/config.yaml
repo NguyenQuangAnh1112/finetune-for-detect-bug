@@ -19,7 +19,7 @@ model:
   root_dir: artifacts/model
   model_name: Qwen/Qwen2.5-Coder-3B-Instruct
   cache_dir: /home/muggle/.cache/huggingface/hub
-  use_4bit: false
+  use_4bit: true
 
 training:
   root_dir: artifacts/training

@@ -70,7 +70,7 @@ class ConfigurationManager:
             per_device_train_batch_size=config.get("per_device_train_batch_size", 2),
             per_device_eval_batch_size=config.get("per_device_eval_batch_size", 2),
             gradient_accumulation_steps=config.get("gradient_accumulation_steps", 4),
-            learning_rate=config.get("learning_rate", 2e-4),
+            learning_rate=float(config.get("learning_rate", 2e-4)),
             logging_steps=config.get("logging_steps", 25),
             save_steps=config.get("save_steps", 100),
             eval_steps=config.get("eval_steps", 100),

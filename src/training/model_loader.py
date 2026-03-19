@@ -42,7 +42,7 @@ def load_model(model_config: ModelConfig) -> AutoModelForCausalLM:
             quantization_config=quantization_config,
             device_map="auto",
             cache_dir=model_config.cache_dir,
-            torch_dtype=torch.bfloat16 if not model_config.use_4bit else None,
+            torch_dtype=torch.bfloat16,
         )
     except OSError as e:
         logger.error(

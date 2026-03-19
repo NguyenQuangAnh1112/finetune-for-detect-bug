@@ -1,9 +1,18 @@
 import os
+
+# Set PyTorch allocator to avoid memory fragmentation BEFORE importing torch/transformers
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
+
 from pathlib import Path
 
 from datasets import load_from_disk
 from peft import LoraConfig, PeftModel, TaskType, get_peft_model
-from transformers import AutoModelForCausalLM, BitsAndBytesConfig, PreTrainedModel, TrainingArguments
+from transformers import (
+    AutoModelForCausalLM,
+    BitsAndBytesConfig,
+    PreTrainedModel,
+    TrainingArguments,
+)
 from trl import SFTTrainer
 
 from src.entity.config_entity import ModelConfig, TrainingConfig
