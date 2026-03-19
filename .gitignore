@@ -25,6 +25,7 @@ logs/
 # MLflow
 mlruns/
 mlflow/
+mlflow.db
 
 # IDE files
 .vscode/
