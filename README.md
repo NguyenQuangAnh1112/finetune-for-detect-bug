@@ -53,6 +53,21 @@ dvc push
 dvc pull
 ```
 
+**Docker (GPU + CUDA)**
+- Yêu cầu: NVIDIA driver + NVIDIA Container Toolkit trên máy host.
+- Build image:
+```bash
+docker build -t bug-detect .
+```
+- Chạy training với GPU:
+```bash
+docker run --gpus all --rm -it \
+  -v "$PWD:/app" \
+  bug-detect \
+  uv run python train.py --config configs/config.yaml
+```
+- Ghi chú: nếu driver quá cũ so với CUDA runtime trong image, container sẽ không dùng được GPU.
+
 **Troubleshooting**
 - OOM GPU: giảm `per_device_train_batch_size`, tăng `gradient_accumulation_steps`, bật `use_4bit: true`.
 - Lỗi dataset không tìm thấy: chạy data transformation trước, đảm bảo `dataset_path` đúng.
